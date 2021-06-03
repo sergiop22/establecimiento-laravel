@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Establecimiento;
 use App\Categoria;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class EstablecimientoController extends Controller
 {
@@ -29,7 +30,7 @@ class EstablecimientoController extends Controller
     public function store(Request $request)
     {
         //validacion
-        $data = $request->validate({
+        $data = $request->validate([
             'nombre' => 'required',
             'categoria_id' => 'required|exists:App\Categoria,id',
             'imagen_principal' => 'required|image|max:1000',
@@ -42,7 +43,28 @@ class EstablecimientoController extends Controller
             'apertura' => 'date_format:H:i',
             'cierre' => 'data_format:H:i|after:apertura',
             'uuid' => 'required|uuid'
-        });
+        ]);
+
+        //Guardar la imagen
+        $ruta_imagen = $request['imagen_principal']->store('principales', 'public');
+        $img = Image::make( public_path("storage/{$ruta_imagen}") )->fit(800, 600);
+
+        auth()->user()->establecimiento()->create([
+            'nombre' => $data['nombre'],
+            'categoria_id' => $data['categoria_id'],
+            'imagen_principal' => $ruta_imagen,
+            'direccion' => $data['direccion'],
+            'colonia' => $data['colonia'],
+            'lat' => $data['lat'],
+            'lng' => $data['lng'],
+            'telefono' => $data['telefono'],
+            'descripcion' => $data['descripcion'],
+            'apertura' => $data['apertura'],
+            'cierre' => $data['cierre'],
+            'uuid' => $data['uuid'],
+        ]);
+
+        return back()->with('estado', 'Tu informacion se almaceno correctamente');
     }
 
     /**
