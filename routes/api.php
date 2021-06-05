@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//listado de API
+
+Route::get('/categorias', 'ApiController@categorias')->name('categorias');
+Route::get('/categorias/{categoria}', 'ApiController@categoria')->name('categoria');
