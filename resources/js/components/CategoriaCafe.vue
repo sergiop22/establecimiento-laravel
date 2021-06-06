@@ -14,7 +14,9 @@
     						{{cafe.apertura}} - {{cafe.cierre}}
     					</p>
 
-    					<a class="btn btn-primary d-block" href="">Ver Lugar</a>
+    					<router-link :to="{name: 'establecimiento', params:{id: cafe.id}}">
+    						<a class="btn btn-primary d-block" href="">Ver Lugar</a>
+    					</router-link>
     				</div>
     			</div>
     		</div>
@@ -26,11 +28,6 @@
 
 
 export default {
-	data: function() {
-		return {
-			cafes: []
-		}
-	},
 	mounted() {
 		axios.get('/api/categorias/cafe')
 			.then(respuesta => {
