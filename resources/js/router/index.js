@@ -15,7 +15,7 @@ const routes = [
 	}
 ]
 
-const router  VueRouter({
+const router = new VueRouter({
 	mode: 'history',
 	routes
 });

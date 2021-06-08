@@ -8,6 +8,14 @@ use App\Establecimiento;
 
 class ApiController extends Controller
 {
+    //metodo para obtener todos los establecimientos
+    public function index()
+    {
+        $establecimientos = Establecimiento::all();
+
+        return response()->json($establecimientos);
+    }
+
     public function categorias() 
     {
     	$categorias = Categoria::all();
@@ -25,6 +33,9 @@ class ApiController extends Controller
     //muestra un establecimiento en especifico
     public function show(Establecimiento $establecimiento)
     {
+        $imagenes = Imagen::where('id_establecimiento', $establecimiento->uuid)->get();
+        $establecimiento->imagenes = $imagenes;
+
         return response()->json($establecimiento);
     }
 }

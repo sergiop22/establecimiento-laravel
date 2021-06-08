@@ -4,16 +4,17 @@
 
 		<div class="row align-items-start">
 			<div class="col-md-8">
-				<img :src="../storage/${establecimiento.imagen_principal}" alt="imagen establecimiento">
+				<img :src="`../storage/${establecimiento.imagen_principal}`" alt="imagen establecimiento">
 				<p class="mt-3">{{establecimiento.descripcion}}</p>
+				<galeria-imagenes></galeria-imagenes>
 			</div>
 
 			<aside class="col-md-4">
 				<div>
-					
+					<mapa-ubicacion></mapa-ubicacion>
 				</div>
 
-				<div class="p-4">
+				<div class="p-4 bg-primary">
 					<h2 class="text-center text-white mt-2 mb-4">Más Información</h2>
 
 					<p class="text-white mt-1">
@@ -51,7 +52,16 @@
 </template>
 
 <script>
+import MapaUbicacion from './MapaUbicacion';
+import GaleriaImagenes from './GaleriaImagenes';
+
 export default {
+
+	components: {
+		MapaUbicacion,
+		GaleriaImagenes
+	},
+
 	mounted() {
 		const {id} = this.$route.params;
 
