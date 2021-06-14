@@ -2,7 +2,7 @@
 	<div class="mapa">
 		<l-map :zoom="zoom" :center="center" :options="mapOptions">
 			<l-tile-layer :url="url" :attribution="attribution" />
-			<l-marker v-for="establecimiento in establecimientos" v-bind:key="establecimiento.id" :lat-lng="obtenerCoordenadas(establecimiento)">
+			<l-marker v-for="establecimiento in establecimientos" v-bind:key="establecimiento.id" :lat-lng="obtenerCoordenadas(establecimiento)" @click="redireccionar(establecimiento.id)">
 				<l-tooltip>
 					<div>
 						{{establecimiento.nombre}} 
@@ -58,6 +58,17 @@ import { LMap, LTileLayer, LMarker, LTooltip, LIcon } from 'vue2-leaflet';
   					lat: establecimiento.lat,
   					lng: establecimiento.lng
   				}
+  			},
+  			redireccionar(id) {
+  				this.$router.push( {name: 'establecimiento', params: {id}})
+  			}
+  		},
+  		watch: {
+  			"$store.state.categoria": function() {
+  				axios.get('/api/categorias/' + this.$store.getters.obtenerCategoria)
+  					.then(respuesta => {
+  						this.$store.commit('AGREGAR_ESTABLECIMIENTOS', respuesta.data)
+  					})
   			}
   		}
 
