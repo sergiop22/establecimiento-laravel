@@ -190,10 +190,16 @@
 
 	                	<div id="dropzone" class="dropzone form-control"></div>
 	                </div>
+
+	                @if(count($imagenes) > 0)
+	                	@foreach($imagenes as $imagen)
+	                		<input class="galeria" type="hidden" value="{{$imagen->ruta_imagen}}">
+	                	@endforeach
+	                @endif
 	        </fieldset>
 
-            <input type="hidden" id="uuid" name="uuid" value="{{ Str::uuid()->toString() }}">
-            <input type="submit" class="btn btn-primary mt-3 d-block" value="Registrar Establecimiento">
+            <input type="hidden" id="uuid" name="uuid" value="{{ $establecimiento->uuid }}">
+            <input type="submit" class="btn btn-primary mt-3 d-block" value="Guardar Cambios">
 
 			</form>
 		</div>

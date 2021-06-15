@@ -35,18 +35,24 @@ class ImagenController extends Controller
 
     public function destroy(Request $request) {
 
+        $uuid = $request->get('uuid');
+        $establecimiento = Establecimiento::where('uuid', $uuid)->first();
+        $this->authorize('delete', $establecimiento);
+
     	$imagen = $request->get('imagen');
 
     	if(File::exists('storage/' . $imagen)) {
+            //elimina imagen del servidor
     		File::delete('storage/' . $imagen);
+
+            //elimina imagen de la BD
+            Imagen::where('ruta_imagen', $imagen)->delete();
     	}
 
     	$respuesta = [
-    		'mensaje' => 'Imagen Eliminada'
+    		'mensaje' => 'Imagen Eliminada',
     		'imagen' => $imagen
     	];
-
-    	Imagen::where('ruta_imagen', '=', $imagen)->delete();
 
     	return response()->json($request);
     }
